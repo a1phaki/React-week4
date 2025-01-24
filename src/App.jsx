@@ -32,6 +32,7 @@ function App() {
       const res = await axios.post(`${base_url}/api/user/check`,{});
       setIsAuth(res.data.success);
     } catch (error) {
+      setIsAuth(false);
       alert(error.response.data.message);
     }
   }
