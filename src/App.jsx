@@ -18,7 +18,7 @@ function App() {
 
   useEffect(()=>{
     const token = document.cookie.replace(
-      /(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/,
+      /(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/,
       "$1"
     );
     axios.defaults.headers.common.Authorization = token;
@@ -30,6 +30,7 @@ function App() {
   const loginCheck = async () =>{
     try {
       const res = await axios.post(`${base_url}/api/user/check`,{});
+      getProducts();
       setIsAuth(res.data.success);
     } catch (error) {
       setIsAuth(false);
@@ -53,9 +54,9 @@ function App() {
     <>
       {
         isAuth?(
-          <ProductsPage  getProducts={getProducts} pageInfo={pageInfo} products={products} />
+          <ProductsPage  getProducts={getProducts} pageInfo={pageInfo} products={products} base_url={base_url} api_path={api_path}/>
         ):(
-          <LoginPage loginCheck={loginCheck} getProducts={getProducts} />
+          <LoginPage loginCheck={loginCheck} getProducts={getProducts} base_url={base_url} />
         )
       }
       

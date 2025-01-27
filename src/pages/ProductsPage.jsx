@@ -6,10 +6,7 @@ import * as bootstrap from "bootstrap";
 import Pagination from '../components/Pagination';
 import ProductModal from '../components/ProductModal';
 
-function ProductsPage ({getProducts,products,pageInfo}){
-    const base_url = import.meta.env.VITE_BASE_URL;
-    const api_path = import.meta.env.VITE_API_PATH;
-
+function ProductsPage ({getProducts,products,pageInfo,base_url,api_path}){
 
     const [modalType,setModalType] = useState('');
 
@@ -23,6 +20,7 @@ function ProductsPage ({getProducts,products,pageInfo}){
         productModalRef.current = new bootstrap.Modal("#productModal", {
             keyboard: false,
         });
+        
     },[])
 
     const [selectedProduct,setSelectedProduct] = useState({
@@ -38,6 +36,7 @@ function ProductsPage ({getProducts,products,pageInfo}){
         content: "",
         isEnabled: false,
         imagesUrl: [''],
+        notice:"",
     });
 
     const openModal = (product,type) => {
@@ -54,6 +53,7 @@ function ProductsPage ({getProducts,products,pageInfo}){
           content: product.content || "",
           isEnabled: product.isEnabled || false,
           imagesUrl: product.imagesUrl || [''],
+          notice: product.notice || '無注意事項'
         });
         productModalRef.current.show();
         setModalType(type);
@@ -128,16 +128,18 @@ function ProductsPage ({getProducts,products,pageInfo}){
             price: Number(selectedProduct.price),
             is_enabled: selectedProduct.isEnabled ? 1 : 0,
             imagesUrl: selectedProduct.imagesUrl,
+            notice: selectedProduct.notice
             },
         };
 
         try {
             if(modalType === 'edit'){
                 const res = await axios.put(`${base_url}/api/${api_path}/admin/product/${id}`,productData);
-            
+
             }else{
                 const res = await axios.post(`${base_url}/api/${api_path}/admin/product`,productData);
             }
+
             productModalRef.current.hide();
             getProducts();
 
@@ -226,6 +228,7 @@ function ProductsPage ({getProducts,products,pageInfo}){
         handleFileChange={handleFileChange}
         selectedProduct={selectedProduct}
         modalType={modalType}
+        productModalRef={productModalRef}
         />
     </>   
     )
@@ -234,6 +237,8 @@ ProductsPage.propTypes = {
     getProducts: PropTypes.func.isRequired,
     products: PropTypes.array.isRequired,
     pageInfo: PropTypes.object.isRequired,
+    base_url: PropTypes.string.isRequired,
+    api_path: PropTypes.string.isRequired,
 };
 
 export default ProductsPage

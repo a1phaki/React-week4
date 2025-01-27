@@ -3,10 +3,7 @@ import axios from 'axios'
 import PropTypes from 'prop-types'
 
 
-function LoginPage ({loginCheck , getProducts}){
-
-    const base_url = import.meta.env.VITE_BASE_URL;
-    
+function LoginPage ({loginCheck , getProducts , base_url}){
 
     const [formData,setFormData] = useState({
         username:'',
@@ -67,6 +64,7 @@ function LoginPage ({loginCheck , getProducts}){
 LoginPage.propTypes = {
     loginCheck: PropTypes.func.isRequired,
     getProducts: PropTypes.func.isRequired,
+    base_url: PropTypes.string.isRequired
 };
 
 export default LoginPage

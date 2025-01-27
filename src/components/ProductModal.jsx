@@ -1,17 +1,7 @@
-import { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import * as bootstrap from "bootstrap";
 
-function ProductModal ({modalType, closeModal, selectedProduct, handleFileChange, handleModalInputChange, handleAddImage, handleRemoveImage, deleteProduct, updateProduct,handleImageChange}) {
 
-    const productModalRef = useRef(null);
-
-    useEffect(()=>{
-        productModalRef.current = new bootstrap.Modal("#productModal", {
-            keyboard: false,
-        });
-    },[])
-
+function ProductModal ({modalType, closeModal, selectedProduct, handleFileChange, handleModalInputChange, handleAddImage, handleRemoveImage, deleteProduct, updateProduct,handleImageChange,productModalRef}) {
 
 
     return(
@@ -61,7 +51,7 @@ function ProductModal ({modalType, closeModal, selectedProduct, handleFileChange
                             {selectedProduct.imagesUrl.map((imgUrl,index) => (
                             <div className='mb-2' key={index}>
                                 <input type="text" className='mb-2 form-control' value={imgUrl} onChange={(e)=>handleImageChange(index,e.target.value)}/>
-                                {imgUrl && (<img src={imgUrl} className='mb-2 img-preview' alt={`附圖${index+1}`} />)}
+                                {imgUrl && (<img src={imgUrl} className='mb-2 img-preview custom-images' alt={`附圖${index+1}`} />)}
                             </div>
                             ))}
                             <div className="d-flex justify-content-between">
@@ -90,7 +80,7 @@ function ProductModal ({modalType, closeModal, selectedProduct, handleFileChange
                             </div>
                             <div className="mb-3 col-6">
                             <label htmlFor="num" className='form-label'>數量</label>
-                            <input type="text" placeholder='請輸入數量' className='form-control' id='num' value={selectedProduct.num} onChange={handleModalInputChange} min='0'/>
+                            <input type="number" placeholder='請輸入數量' className='form-control' id='num' value={selectedProduct.num} onChange={handleModalInputChange} min='0'/>
                             </div>
                             <div className="mb-3 col-6">
                             <label htmlFor="unit" className='form-label'>單位</label>
@@ -98,11 +88,11 @@ function ProductModal ({modalType, closeModal, selectedProduct, handleFileChange
                             </div>
                             <div className="mb-3 col-6">
                             <label htmlFor="originPrice" className='form-label'>原價</label>
-                            <input type="num" placeholder='請輸入原價' className='form-control' id='originPrice' value={selectedProduct.originPrice} onChange={handleModalInputChange} min='0'/>
+                            <input type="number" placeholder='請輸入原價' className='form-control' id='originPrice' value={selectedProduct.originPrice} onChange={handleModalInputChange} min='0' />
                             </div>
                             <div className="mb-3 col-6">
                             <label htmlFor="price" className='form-label'>售價</label>
-                            <input type="num" placeholder='請輸入售價' className='form-control' id='price' value={selectedProduct.price} onChange={handleModalInputChange} min='0'/>
+                            <input type="number" placeholder='請輸入售價' className='form-control' id='price' value={selectedProduct.price} onChange={handleModalInputChange} min='0'/>
                             </div>
                             <div className="col-12 mb-3">
                             <label htmlFor="description" className='form-label'>商品描述</label>
@@ -112,6 +102,11 @@ function ProductModal ({modalType, closeModal, selectedProduct, handleFileChange
                             <label htmlFor="content" className='form-label'>商品內容</label>
                             <textarea type="text" placeholder='請輸入商品內容' className='form-control' id='content' value={selectedProduct.content} onChange={handleModalInputChange}/>
                             </div>
+                            <div className="col-12 mb-3">
+                            <label htmlFor="notice" className='form-label'>注意事項</label>
+                            <textarea type="text" placeholder='請輸入注意事項' className='form-control' id='notice' value={selectedProduct.notice} onChange={handleModalInputChange}/>
+                            </div>
+
                             <div className="col-12 mb-3">
                             <div className="form-check">
                                 <input className="form-check-input" type="checkbox" value={selectedProduct.is_enabled} id="isEnabled" onChange={handleModalInputChange} />
@@ -151,6 +146,7 @@ ProductModal.propTypes = {
     deleteProduct: PropTypes.func.isRequired,
     updateProduct: PropTypes.func.isRequired,
     handleImageChange: PropTypes.func.isRequired,
+    productModalRef: PropTypes.object.isRequired,
 };
 
 export default ProductModal;
